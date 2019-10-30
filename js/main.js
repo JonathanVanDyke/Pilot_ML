@@ -60,7 +60,7 @@ function init() {
   scene = new Physijs.Scene;
 
   // let scene = new Physijs.Scene({ reportsize: 50, fixedTimeStep: 1 / 20 }); //Slow down scene to fix rotation bug
-  scene.setGravity(new THREE.Vector3(0, -.4, 0));
+  scene.setGravity(new THREE.Vector3(0, -.1, 0));
   {
     const color = 'black';  // white
     const near = 90;
@@ -95,7 +95,7 @@ function init() {
   // 05
   //MAKE WINDOW RESPONSIVE ON RESIZE
   window.addEventListener('resize', () => {
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setSize(window.innerWidth / 2, window.innerHeight / 2);
     camera.aspect = window.innerWidth / window.innerHeight;
 
     camera.updateProjectionMatrix();
@@ -170,7 +170,7 @@ function createMeshes() {
 
   //GROUND
   let groundGeometry = new THREE.PlaneGeometry(1000, 1000, 0); //PRIMITIVE SHAPE AND SIZE
-  let groundMaterial = new THREE.MeshBasicMaterial({ color: 'grey', visible: true }); //COLOR OF MESH
+  let groundMaterial = new THREE.MeshBasicMaterial({ color: 'black', visible: true }); //COLOR OF MESH
   // let ground = new THREE.Mesh(groundGeometry, groundMaterial); //MESH POINTS MAT TO GEOMETRY
 
 
@@ -239,7 +239,7 @@ function createMeshes() {
 
 function createRenderer() {
   renderer = new THREE.WebGLRenderer({ antialias: true });
-  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setSize(window.innerWidth / 2, window.innerHeight / 2);
   renderer.setPixelRatio(window.devicePixelRatio);
 
   renderer.physicallyCorrectLights = true;
@@ -295,27 +295,30 @@ let animate = function (timeStamp) {
   let playerSpeed = movementSpeed * boost * 2;
   
   //LEFT
-  if (input.isLeftPressed) {
+  // if (input.isLeftPressed || label === "left") {
+  if ((input.isLeftPressed && player.position.x > -200) || label === "left") {
     player.__dirtyPosition = true;
     player.__dirtyRotation = true;
     // player.setLinearVelocity(_vector);
-    player.translateOnAxis(new THREE.Vector3(playerSpeed * 100, 0, 0), -rotateAngle)
+    player.translateOnAxis(new THREE.Vector3(playerSpeed * 50, 0, 0), -rotateAngle)
 
     // player.position.x -= Math.sin(player.rotation.y + Math.PI / 2) * playerSpeed;
     // player.position.z -= Math.cos(player.rotation.y + Math.PI / 2) * playerSpeed;
   }
   //RIGHT
-  if (input.isRightPressed) {
+  // if (input.isRightPressed || label === "right") {
+  if ((input.isRightPressed && player.position.x < 200) || label === "right") {
+    console.log(player.position.x)
     player.__dirtyPosition = true;
     player.__dirtyRotation = true;
     // player.setLinearVelocity(_vector);
-    player.translateOnAxis(new THREE.Vector3(-playerSpeed * 100, 0, 0), -rotateAngle)
+    player.translateOnAxis(new THREE.Vector3(-playerSpeed * 50, 0, 0), -rotateAngle)
 
     // player.position.x += Math.sin(player.rotation.y + Math.PI / 2) * playerSpeed;
     // player.position.z += Math.cos(player.rotation.y + Math.PI / 2) * playerSpeed;
   }
   //JUMP  
-  if (input.isSpacePressed) {
+  if (input.isSpacePressed && player.position.y < 255) {
     player.__dirtyPosition = true;
     player.__dirtyRotation = true;
     player.setLinearVelocity(_vector);
