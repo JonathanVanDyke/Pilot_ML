@@ -47,7 +47,7 @@ function init() {
   top: 40%;
   `;
   document.body.appendChild(crosshair);
-  crosshair.innerHTML = 'X'
+  // crosshair.innerHTML = 'X'
   
 
   // 201 
@@ -60,7 +60,7 @@ function init() {
   scene = new Physijs.Scene;
 
   // let scene = new Physijs.Scene({ reportsize: 50, fixedTimeStep: 1 / 20 }); //Slow down scene to fix rotation bug
-  scene.setGravity(new THREE.Vector3(0, -15, 0));
+  scene.setGravity(new THREE.Vector3(0, -.4, 0));
   {
     const color = 'black';  // white
     const near = 90;
@@ -138,9 +138,11 @@ function createCamera() {
     300
   );
   // debugger
+  let radians = THREE.Math.degToRad(-90);
 
-  camera.position.set(0, 6, 10);
-  camera.rotation.x = -.2
+  
+  camera.rotation.x = radians;
+  camera.position.set(0, 25, -10);
 }
 
 function createLights() {
@@ -154,7 +156,6 @@ function createLights() {
   let light2 = new THREE.AmbientLight(0xaaaaaa, 1);
   light2.position.set(0, 0, 25)
   scene.add(light2)
-
   
   // const ambientLight = new THREE.HemisphereLight(
   //   0xddeeff,
@@ -166,62 +167,83 @@ function createLights() {
 }
 
 function createMeshes() {
-  // 07
-  //ELEMENT ONE (**LOOK UP MATERIAL OPTIONS**)
-  // let playerGeometry = new THREE.BoxBufferGeometry(5, 8, 5, 0); //PRIMITIVE SHAPE AND SIZE (set 3rd val to 111 for cat paw)
-  // let playerMaterial = new THREE.MeshLambertMaterial({
-  //   color: 0x22CAC2,
-  //   opacity: 1.0,
-  //   // visible: false,
-  // }); //COLOR OF MESH
-  // let playerGeometry = new THREE.SphereGeometry(1, 1, 0); //PRIMITIVE SHAPE AND SIZE
-  // let playerMaterial = new THREE.MeshLambertMaterial({ color: 0xff00C2 }); //COLOR OF MESH
 
-  let playerGeometry = new THREE.ConeBufferGeometry(1, 2, 5);
+  //GROUND
+  let groundGeometry = new THREE.PlaneGeometry(1000, 1000, 0); //PRIMITIVE SHAPE AND SIZE
+  let groundMaterial = new THREE.MeshBasicMaterial({ color: 'grey', visible: true }); //COLOR OF MESH
+  // let ground = new THREE.Mesh(groundGeometry, groundMaterial); //MESH POINTS MAT TO GEOMETRY
+
+
+  var friction = 0.8; // high friction
+  var restitution = 0.3; // low restitution
+
+  // var material = Physijs.createMaterial(
+  //   new THREE.MeshBasicMaterial({ color: 0x888888 }),
+  //   friction,
+  //   restitution,
+  // );
+
+  let ground = new Physijs.PlaneMesh(groundGeometry, groundMaterial, 0, 0); //MESH POINTS MAT TO GEOMETRY
+  ground.rotation.x = -0.5 * Math.PI;
+  ground.name = 'ground'
+  ground.receiveShadow = true;
+  scene.add(ground); //DROP ELEMENT INTO VIRTUAL ENVIRONMENT
+
+  //OBSTACLES
+    // 07c
+  // ELEMENT ONE (**LOOK UP MATERIAL OPTIONS**)
+  for (let i = 0; i < 1000; i++) {
+    let env2BlockGeometry = new THREE.BoxBufferGeometry(1, 1, 1); //PRIMITIVE SHAPE AND SIZE
+    let env2BlockMaterial = new THREE.MeshLambertMaterial({ color: 0x22CAC2 }); //COLOR OF MESH
+    let env2Block = new THREE.Mesh(env2BlockGeometry, env2BlockMaterial); //MESH POINTS MAT TO GEOMETRY
+    env2Block.position.x = (Math.random() - 0.5) * 400;
+    env2Block.position.y = (Math.random() - 0.5) * 400;
+    env2Block.position.z = (Math.random() - 0.5) * 300;
+    scene.add(env2Block); //DROP ELEMENT INTO VIRTUAL ENVIRONMENT
+  }
+
+
+
+
+  //PLAYER
+  let playerGeometry = new THREE.ConeBufferGeometry(1, 3, 4);
   let playerMaterial = new THREE.MeshLambertMaterial({
     color: 0xff00C2,
-    opacity: 0.5,
+    opacity: 1.0,
     transparent: true,
   })
-  // p1radarGeometry.rotateX(-Math.PI / 2)
 
-
-
-  // let player = new THREE.Mesh(playerGeometry, playerMaterial); //MESH POINTS MAT TO GEOMETRY
-  player = new Physijs.BoxMesh(playerGeometry, playerMaterial); //MESH POINTS MAT TO GEOMETRY
-  player.position.set(0, 1, 0);
+  player = new Physijs.BoxMesh(playerGeometry, playerMaterial); 
+  player.position.set(0, 250, 0);
+  playerGeometry.rotateX(Math.PI / 2);
+  playerGeometry.rotateY(Math.PI);
   player.name = 'player';
   player.hp = 20;
   player.add(camera)
 
-  
-  let player2Geometry = new THREE.CubeGeometry(5, 8, 5, 0);
-  let player2Material = new THREE.MeshLambertMaterial({
-    color: 0x22CAC2,
-    opacity: 0.0,
-  })
-
   player2 = new Physijs.BoxMesh(playerGeometry, playerMaterial);
+
+  let lightPlayer = new THREE.DirectionalLight(0xFFFFFF, 1);
+  lightPlayer.position.set(0, 200, 0)
+  lightPlayer.target = player;
+  scene.add(lightPlayer)
+  scene.add(lightPlayer.target);
 
   player2.hp = 20;
   scene.add(player)
+
+
+
+
 }
 
 function createRenderer() {
-  // 03
-  //INSTANCE OF RENDERER
   renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setPixelRatio(window.devicePixelRatio);
 
-  // renderer.gammaFactorw
-
   renderer.physicallyCorrectLights = true;
-  // renderer.setClearColor("#e5e5e5"); //BACKGROUND COLOR
   
-  
-
-
   document.body.appendChild(renderer.domElement);
 }
 
@@ -231,10 +253,8 @@ function createRenderer() {
 let animate = function (timeStamp) {
   stats.begin();
 
-  
   player.setAngularFactor(_vector);
   player.setAngularVelocity(_vector);
-  // player.setLinearVelocity(new THREE.Vector3(0, 0, 0));
 
   let delta = clock.getDelta(); // seconds
   // console.log(clock.getElapsedTime())
@@ -278,7 +298,7 @@ let animate = function (timeStamp) {
   if (input.isLeftPressed) {
     player.__dirtyPosition = true;
     player.__dirtyRotation = true;
-    player.setLinearVelocity(_vector);
+    // player.setLinearVelocity(_vector);
     player.translateOnAxis(new THREE.Vector3(playerSpeed * 100, 0, 0), -rotateAngle)
 
     // player.position.x -= Math.sin(player.rotation.y + Math.PI / 2) * playerSpeed;
@@ -288,7 +308,7 @@ let animate = function (timeStamp) {
   if (input.isRightPressed) {
     player.__dirtyPosition = true;
     player.__dirtyRotation = true;
-    player.setLinearVelocity(_vector);
+    // player.setLinearVelocity(_vector);
     player.translateOnAxis(new THREE.Vector3(-playerSpeed * 100, 0, 0), -rotateAngle)
 
     // player.position.x += Math.sin(player.rotation.y + Math.PI / 2) * playerSpeed;
@@ -305,10 +325,16 @@ let animate = function (timeStamp) {
     // player.position.y += playerSpeed*2;
   }
 
+  if (player.position.y < 100) {
+    // player.translateOnAxis(new THREE.Vector3(0, -1000, 0), -rotateAngle)
+    player.position.y = 250
+  }
+
   if(input.isXPressed) {
     player.__dirtyPosition = true;
     player.__dirtyRotation = true;
     if (player.position.y > 4.5) {
+      player.translateOnAxis(new THREE.Vector3(0, movementSpeed * 100, 0), -rotateAngle)
       player.translateOnAxis(new THREE.Vector3(0, movementSpeed * 100, 0), -rotateAngle)
       player.setAngularFactor(_vector);
       player.setAngularVelocity(_vector);
@@ -324,7 +350,7 @@ let animate = function (timeStamp) {
     player.setAngularFactor(_vector);
     player.setAngularVelocity(_vector);
     player.setAngularFactor(_vector);
-    player.setLinearVelocity(_vector);
+    // player.setLinearVelocity(_vector);
 
     player.translateOnAxis(new THREE.Vector3(0, 0, playerSpeed*100), -rotateAngle)
     // console.log(player.getWorldQuaternion())
@@ -340,7 +366,7 @@ let animate = function (timeStamp) {
   if (input.isBwdPressed) {
     player.__dirtyPosition = true;
     player.__dirtyRotation = true;
-    player.setLinearVelocity(_vector);
+    // player.setLinearVelocity(_vector);
     player.translateOnAxis(new THREE.Vector3(0, 0, -playerSpeed * 100), -rotateAngle)
 
     // player.position.x += Math.sin(player.rotation.y) * playerSpeed;
@@ -350,7 +376,7 @@ let animate = function (timeStamp) {
   if (input.isRLPressed) {
     // player.rotation.y += playerSpeed/4;
     player.rotateOnAxis(new THREE.Vector3(0, 1, 0), +0.05); 
-    player.setLinearVelocity(_vector);
+    // player.setLinearVelocity(_vector);
     // console.log(player.rotateOnAxis)
     player.__dirtyPosition = true;
     player.__dirtyRotation = true;
@@ -359,7 +385,7 @@ let animate = function (timeStamp) {
   if (input.isRRPressed) {
 
     player.rotateOnAxis(new THREE.Vector3(0, 1, 0), -0.05); 
-    player.setLinearVelocity(_vector);
+    // player.setLinearVelocity(_vector);
     player.__dirtyPosition = true;
     player.__dirtyRotation = true;
   }
