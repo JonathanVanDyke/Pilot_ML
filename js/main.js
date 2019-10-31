@@ -241,6 +241,7 @@ function createRenderer() {
 
 
 let animate = function (timeStamp) {
+  label = '' || label;
   stats.begin();
 
   player.setAngularFactor(_vector);
