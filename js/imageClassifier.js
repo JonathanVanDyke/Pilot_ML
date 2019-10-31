@@ -1,10 +1,3 @@
-// Daniel Shiffman
-// http://youtube.com/thecodingtrain
-// http://codingtra.in
-
-// Webcam Image Classification with ml5
-// https://youtu.be/D9BoBSkLvFo
-
 let mobilenet;
 let classifier;
 let video;
