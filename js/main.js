@@ -1,5 +1,5 @@
 let camera, sceneHUD, cameraHUD, rotateAngle, renderer, scene, player, bullets, bulletsBlock, input, environment, _vector, clock, lastTimeStamp;
-let label;
+let label = '';
 
 let RELOAD = 1000; 
 
