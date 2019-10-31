@@ -1,16 +1,5 @@
 let camera, sceneHUD, cameraHUD, rotateAngle, renderer, scene, player, bullets, bulletsBlock, input, environment, _vector, clock, lastTimeStamp;
-let player2 = { id: null, x: 0, y: 0, z: 0, ph: 0 };
-let serverPackage = [];
-let player2Data = {id: null, x: 0, y: 0, z: 0, ph: 0};
-let bulletCount = 0;
-let j = 0;
-let radar;
-let p1radar;
-p1radar = {position: {x: 0, y: 0, z: 0}};
-let p2radar;
-p2radar = {position: {x: 0, y: 0, z: 0}};
-let hpBar, hpTxt = { position: { x: 0, y: 0, z: 0 } };;
-let hpBar2, hp2Txt = { position: { x: 0, y: 0, z: 0 } };;
+let label;
 
 let RELOAD = 1000; 
 

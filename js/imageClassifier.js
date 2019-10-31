@@ -8,7 +8,6 @@
 let mobilenet;
 let classifier;
 let video;
-let label = 'test';
 let fwdButton;
 let leftButton;
 let rightButton;
