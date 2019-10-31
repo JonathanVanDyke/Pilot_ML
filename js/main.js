@@ -94,12 +94,13 @@ function init() {
 
   // 05
   //MAKE WINDOW RESPONSIVE ON RESIZE
-  window.addEventListener('resize', () => {
-    renderer.setSize(window.innerWidth / 2, window.innerHeight / 2);
-    camera.aspect = window.innerWidth / window.innerHeight;
+  // window.addEventListener('resize', () => {
+  //   renderer.setSize(window.innerWidth / 2, window.innerHeight / 2);
+  //   camera.aspect = window.innerWidth / window.innerHeight;
 
-    camera.updateProjectionMatrix();
-  })
+  //   camera.updateProjectionMatrix();
+  // })
+
 
   // 06
   //RAYCASTER => VECTOR 'RAY'... RAY === Array? (like vector array?)
@@ -169,7 +170,7 @@ function createLights() {
 function createMeshes() {
 
   //GROUND
-  let groundGeometry = new THREE.PlaneGeometry(1000, 1000, 0); //PRIMITIVE SHAPE AND SIZE
+  let groundGeometry = new THREE.PlaneGeometry(3000, 3000, 0); //PRIMITIVE SHAPE AND SIZE
   let groundMaterial = new THREE.MeshBasicMaterial({ color: 'black', visible: true }); //COLOR OF MESH
   // let ground = new THREE.Mesh(groundGeometry, groundMaterial); //MESH POINTS MAT TO GEOMETRY
 
@@ -239,7 +240,7 @@ function createMeshes() {
 
 function createRenderer() {
   renderer = new THREE.WebGLRenderer({ antialias: true });
-  renderer.setSize(window.innerWidth / 2, window.innerHeight / 2);
+  renderer.setSize(600, 400);
   renderer.setPixelRatio(window.devicePixelRatio);
 
   renderer.physicallyCorrectLights = true;
@@ -296,7 +297,7 @@ let animate = function (timeStamp) {
   
   //LEFT
   // if (input.isLeftPressed || label === "left") {
-  if ((input.isLeftPressed && player.position.x > -200) || label === "left") {
+  if ((input.isLeftPressed || label === "left") && player.position.x > -200) {
     player.__dirtyPosition = true;
     player.__dirtyRotation = true;
     // player.setLinearVelocity(_vector);
@@ -307,8 +308,8 @@ let animate = function (timeStamp) {
   }
   //RIGHT
   // if (input.isRightPressed || label === "right") {
-  if ((input.isRightPressed && player.position.x < 200) || label === "right") {
-    console.log(player.position.x)
+  if ((input.isRightPressed || label === "right") && player.position.x < 200) {
+    // console.log(player.position.x)
     player.__dirtyPosition = true;
     player.__dirtyRotation = true;
     // player.setLinearVelocity(_vector);

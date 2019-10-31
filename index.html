@@ -6,7 +6,14 @@
   <script src="https://unpkg.com/ml5@0.4.1/dist/ml5.min.js"></script>
 </head>
 
-<body style=margin:0>
+<body style="margin: auto;
+    display: flex;
+    justify-content: columns;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    background: linear-gradient(45deg, #0d0e35, transparent);">
   <div id='hud'>
     <!-- <script src="./lib/socket.io.js"></script>
     <script>
@@ -36,7 +43,15 @@
     <script src="./js/main.js"></script>
     <div id="UI"></div>
     <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
-
+    <div style="position: absolute;
+      margin-top: 60px;
+      width: 307px;
+      right: 100;">
+      <p>Choose a hand sign or image for left and click the left button to take photo while slowly moving your hand (5 clicks work well)</p>
+      <p>Choose a different hand sign or image (must be fairly different from left) for the right and take 5+ photos</p>
+      <p>Click train and use to move your ship!</p>
+      <p>(Feel free to also manually move around with W,A,S,D / Q,E / Space / K)</p>
+    </div>
 
   </div>
 </body>

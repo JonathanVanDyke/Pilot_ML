@@ -13,6 +13,8 @@ let fwdButton;
 let leftButton;
 let rightButton;
 let trainButton;
+let lcount = 0;
+let webCam;
 
 function modelReady() {
   console.log('Model is ready');
@@ -50,8 +52,10 @@ function gotResults(error, result) {
 //   image(puffin, 0, 0, width, height);
 // }
 
+
 function setup() {
-  createCanvas(window.innerWidth / 2, window.innerHeight / 2);
+  webCam = createCanvas(600, 400);
+
   video = createCapture(VIDEO);
   video.hide();
   background(0);
@@ -62,16 +66,41 @@ function setup() {
   // fwdButton.mousePressed(function() {
   //   classifier.addImage('forward');
   // })
-  leftButton = createButton('Left');
+  // lcount = 0;
+  leftButton = createButton(`Left`);
+  leftButton.style('position', 'absolute');
+  leftButton.style('background', 'none');
+  leftButton.style('border', '2px solid black');
+  leftButton.style('padding', '20px');
+  leftButton.style('border-radius', '5px');
+  leftButton.style('font-size', '20px');
+  leftButton.style('margin-top', '30px');
+  leftButton.style('margin-left', '350px');
   leftButton.mousePressed(function() {
     classifier.addImage('left');
   })
   rightButton = createButton('Right');
+  rightButton.style('position', 'absolute');
+  rightButton.style('background', 'none');
+  rightButton.style('border', '2px solid black');
+  rightButton.style('padding', '20px 14px');
+  rightButton.style('border-radius', '5px');
+  rightButton.style('font-size', '20px');
+  rightButton.style('margin-top', '110px');
+  rightButton.style('margin-left', '350px');
   rightButton.mousePressed(function() {
     classifier.addImage('right');
     debugger
   })
   trainButton = createButton('Train');
+  trainButton.style('position', 'absolute');
+  trainButton.style('background', 'none');
+  trainButton.style('border', '2px solid black');
+  trainButton.style('padding', '8px 17px');
+  trainButton.style('border-radius', '5px');
+  trainButton.style('font-size', '20px');
+  trainButton.style('margin-top', '178px');
+  trainButton.style('margin-left', '350px');
   trainButton.mousePressed(function() {
     classifier.train(whileTraining);
   })
