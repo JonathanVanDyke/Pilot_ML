@@ -287,8 +287,7 @@ let animate = function (timeStamp) {
   
   //LEFT
   // if (input.isLeftPressed || label === "left") {
-  // if ((input.isLeftPressed || label === "left") && player.position.x > -200) {
-  if ((input.isLeftPressed ) && player.position.x > -200) {
+  if ((input.isLeftPressed || label === "left") && player.position.x > -200) {
     player.__dirtyPosition = true;
     player.__dirtyRotation = true;
     // player.setLinearVelocity(_vector);
@@ -299,8 +298,7 @@ let animate = function (timeStamp) {
   }
   //RIGHT
   // if (input.isRightPressed || label === "right") {
-  // if ((input.isRightPressed || label === "right") && player.position.x < 200) {
-  if ((input.isRightPressed) && player.position.x < 200) {
+  if ((input.isRightPressed || label === "right") && player.position.x < 200) {
     // console.log(player.position.x)
     player.__dirtyPosition = true;
     player.__dirtyRotation = true;
