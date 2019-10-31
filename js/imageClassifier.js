@@ -46,7 +46,7 @@ function gotResults(error, result) {
 
 
 function setup() {
-  webCam = createCanvas(600, 400);
+  webCam = createCanvas(600, 400).style(`transform: rotateY(180deg);`);
 
   video = createCapture(VIDEO);
   video.hide();
