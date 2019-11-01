@@ -338,7 +338,8 @@ let animate = function (timeStamp) {
   //FWD 
 
 
-  if (input.isFwdPressed) {
+  if ((input.isFwdPressed || label === "forward") && player.position.z > -200) {
+    console.log(player.position.z)
     player.__dirtyPosition = true;
     player.__dirtyRotation = true;
     player.setAngularFactor(_vector);
@@ -357,7 +358,7 @@ let animate = function (timeStamp) {
     // player.position.z -= Math.cos(player.rotation.y) * playerSpeed;
   }
   //BACK 
-  if (input.isBwdPressed) {
+  if ((input.isBwdPressed || label === "backward") && player.position.z < 200) {
     player.__dirtyPosition = true;
     player.__dirtyRotation = true;
     // player.setLinearVelocity(_vector);

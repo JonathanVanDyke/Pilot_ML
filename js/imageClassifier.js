@@ -31,7 +31,7 @@ function gotResults(error, result) {
     console.error(error);
   } else {
     // console.log(results);
-    // debugger
+    debugger
     // ARRAY OF ONLY TWO
     // console.log(result)
     label = result[0].label;
@@ -52,6 +52,7 @@ function setup() {
   video.hide();
   background(0);
   mobilenet = ml5.featureExtractor('MobileNet', modelReady);
+  mobilenet.config.numLabels = 5;
   classifier = mobilenet.classification(video, videoReady);
 
   // fwdButton = createButton('Forward');
@@ -82,7 +83,46 @@ function setup() {
   rightButton.style('margin-left', '350px');
   rightButton.mousePressed(function() {
     classifier.addImage('right');
-    debugger
+    // debugger
+  })
+  fwdButton = createButton('Forward');
+  fwdButton.style('position', 'absolute');
+  fwdButton.style('background', 'none');
+  fwdButton.style('border', '2px solid black');
+  fwdButton.style('padding', '20px 14px');
+  fwdButton.style('border-radius', '5px');
+  fwdButton.style('font-size', '20px');
+  fwdButton.style('margin-top', '230px');
+  fwdButton.style('margin-left', '350px');
+  fwdButton.mousePressed(function() {
+    classifier.addImage('forward');
+    // debugger
+  })
+  fwdButton = createButton('Backward');
+  fwdButton.style('position', 'absolute');
+  fwdButton.style('background', 'none');
+  fwdButton.style('border', '2px solid black');
+  fwdButton.style('padding', '20px 14px');
+  fwdButton.style('border-radius', '5px');
+  fwdButton.style('font-size', '20px');
+  fwdButton.style('margin-top', '350px');
+  fwdButton.style('margin-left', '350px');
+  fwdButton.mousePressed(function() {
+    classifier.addImage('backward');
+    // debugger
+  })
+  neutButton = createButton('Neutral');
+  neutButton.style('position', 'absolute');
+  neutButton.style('background', 'none');
+  neutButton.style('border', '2px solid black');
+  neutButton.style('padding', '20px 14px');
+  neutButton.style('border-radius', '5px');
+  neutButton.style('font-size', '20px');
+  neutButton.style('margin-top', '300px');
+  neutButton.style('margin-left', '350px');
+  neutButton.mousePressed(function() {
+    classifier.addImage('neutral');
+    // debugger
   })
   trainButton = createButton('Train');
   trainButton.style('position', 'absolute');
@@ -104,6 +144,7 @@ function draw() {
   image(video, 0, 0);
   fill(255);
   textSize(32);
-  text(label, 10, height - 20);
+  text(label, 10, height - 20)
+  debugger
   // console.log(label)
 }
