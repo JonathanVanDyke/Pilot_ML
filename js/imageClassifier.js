@@ -2,8 +2,12 @@ let mobilenet;
 let classifier;
 let video;
 let fwdButton;
+let bckButton;
 let leftButton;
 let rightButton;
+let rrButton;
+let rlButton;
+let resetButton;
 let trainButton;
 let lcount = 0;
 let webCam;
@@ -52,7 +56,7 @@ function setup() {
   video.hide();
   background(0);
   mobilenet = ml5.featureExtractor('MobileNet', modelReady);
-  mobilenet.config.numLabels = 5;
+  mobilenet.config.numLabels = 8;
   classifier = mobilenet.classification(video, videoReady);
 
   // fwdButton = createButton('Forward');
@@ -98,17 +102,43 @@ function setup() {
     classifier.addImage('forward');
     // debugger
   })
-  fwdButton = createButton('Backward');
-  fwdButton.style('position', 'absolute');
-  fwdButton.style('background', 'none');
-  fwdButton.style('border', '2px solid black');
-  fwdButton.style('padding', '20px 14px');
-  fwdButton.style('border-radius', '5px');
-  fwdButton.style('font-size', '20px');
-  fwdButton.style('margin-top', '350px');
-  fwdButton.style('margin-left', '350px');
-  fwdButton.mousePressed(function() {
+  bckButton = createButton('Backward');
+  bckButton.style('position', 'absolute');
+  bckButton.style('background', 'none');
+  bckButton.style('border', '2px solid black');
+  bckButton.style('padding', '20px 14px');
+  bckButton.style('border-radius', '5px');
+  bckButton.style('font-size', '20px');
+  bckButton.style('margin-top', '350px');
+  bckButton.style('margin-left', '350px');
+  bckButton.mousePressed(function() {
     classifier.addImage('backward');
+    // debugger
+  })
+  rrButton = createButton('Rotate Right');
+  rrButton.style('position', 'absolute');
+  rrButton.style('background', 'none');
+  rrButton.style('border', '2px solid black');
+  rrButton.style('padding', '20px 14px');
+  rrButton.style('border-radius', '5px');
+  rrButton.style('font-size', '20px');
+  rrButton.style('margin-top', '400px');
+  rrButton.style('margin-left', '350px');
+  rrButton.mousePressed(function() {
+    classifier.addImage('rr');
+    // debugger
+  })
+  rlButton = createButton('Rotate Left');
+  rlButton.style('position', 'absolute');
+  rlButton.style('background', 'none');
+  rlButton.style('border', '2px solid black');
+  rlButton.style('padding', '20px 14px');
+  rlButton.style('border-radius', '5px');
+  rlButton.style('font-size', '20px');
+  rlButton.style('margin-top', '450px');
+  rlButton.style('margin-left', '350px');
+  rlButton.mousePressed(function() {
+    classifier.addImage('rl');
     // debugger
   })
   neutButton = createButton('Neutral');
@@ -122,6 +152,19 @@ function setup() {
   neutButton.style('margin-left', '350px');
   neutButton.mousePressed(function() {
     classifier.addImage('neutral');
+    // debugger
+  })
+  resetButton = createButton('Reset!');
+  resetButton.style('position', 'absolute');
+  resetButton.style('background', 'none');
+  resetButton.style('border', '2px solid black');
+  resetButton.style('padding', '20px 14px');
+  resetButton.style('border-radius', '5px');
+  resetButton.style('font-size', '20px');
+  resetButton.style('margin-top', '300px');
+  resetButton.style('margin-left', '450px');
+  resetButton.mousePressed(function() {
+    classifier.addImage('reset');
     // debugger
   })
   trainButton = createButton('Train');

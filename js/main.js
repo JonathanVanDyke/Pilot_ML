@@ -335,10 +335,26 @@ let animate = function (timeStamp) {
     }
   }
 
+  if (label === "reset") {
+    player.__dirtyPosition = true;
+    player.__dirtyRotation = true;
+
+    // player.rotation.x = 0;
+    // player.rotation.z = 0;
+    player.setLinearVelocity(_vector);
+    player.setAngularFactor(_vector);
+    player.setAngularVelocity(_vector);
+    player.position.x = 0;
+    player.position.y = 0;
+    player.position.z = 0;
+    scene.setGravity(new THREE.Vector3(0, -.1, 0));
+
+  }
+
   //FWD 
 
 
-  if ((input.isFwdPressed || label === "forward") && player.position.z > -200) {
+  if ((input.isFwdPressed || label === "forward")) {
     console.log(player.position.z)
     player.__dirtyPosition = true;
     player.__dirtyRotation = true;
@@ -347,7 +363,7 @@ let animate = function (timeStamp) {
     player.setAngularFactor(_vector);
     // player.setLinearVelocity(_vector);
 
-    player.translateOnAxis(new THREE.Vector3(0, 0, playerSpeed*100), -rotateAngle)
+    player.translateOnAxis(new THREE.Vector3(0, 0, playerSpeed*50), -rotateAngle)
     // console.log(player.getWorldQuaternion())
  
 
@@ -368,7 +384,7 @@ let animate = function (timeStamp) {
     // player.position.z += Math.cos(player.rotation.y) * playerSpeed;
   }
   //RotLeft
-  if (input.isRLPressed) {
+  if (input.isRLPressed || label === "rl") {
     // player.rotation.y += playerSpeed/4;
     player.rotateOnAxis(new THREE.Vector3(0, 1, 0), +0.05); 
     // player.setLinearVelocity(_vector);
@@ -377,7 +393,7 @@ let animate = function (timeStamp) {
     player.__dirtyRotation = true;
   }
   //RotRight
-  if (input.isRRPressed) {
+  if (input.isRRPressed || label === "rr") {
 
     player.rotateOnAxis(new THREE.Vector3(0, 1, 0), -0.05); 
     // player.setLinearVelocity(_vector);
